@@ -1,0 +1,6 @@
+Flask
+requests
+langdetect
+Pillow
+pytesseract
+gunicorn

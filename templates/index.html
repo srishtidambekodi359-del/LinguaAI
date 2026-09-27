@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LinguaAI - Smart Translation</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <!-- HEADER -->
+    <header class="top-header">
+
+        <div class="brand">
+            <div class="brand-icon">🌐</div>
+
+            <div>
+                <h1>LinguaAI</h1>
+                <p>Smart Translation for Everyone</p>
+            </div>
+        </div>
+
+        <div class="header-actions">
+
+            <button
+                type="button"
+                id="historyBtn"
+                class="header-btn"
+            >
+                🕘 History
+            </button>
+
+            <button
+                type="button"
+                id="favoritesBtn"
+                class="header-btn"
+            >
+                ⭐ Favorites
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <nav class="feature-nav">
+
+        <button
+            type="button"
+            class="nav-btn active"
+            id="translatorTab"
+        >
+            🌐 Translator
+        </button>
+
+        <button
+            type="button"
+            class="nav-btn"
+            id="conversationTab"
+        >
+            💬 Conversation
+        </button>
+
+        <button
+            type="button"
+            class="nav-btn"
+            id="imageTab"
+        >
+            📸 Image Translate
+        </button>
+
+        <button
+            type="button"
+            class="nav-btn"
+            id="voiceTab"
+        >
+            🎤 Voice Translate
+        </button>
+
+    </nav>
+
+
+    <!-- =====================================================
+         NORMAL TRANSLATOR
+    ====================================================== -->
+
+    <section
+        id="translatorSection"
+        class="feature-section active-section"
+    >
+
+        <div class="language-bar">
+
+            <div class="language-group">
+
+                <label for="sourceLanguage">From</label>
+
+                <select id="sourceLanguage">
+
+                    <option value="auto">✨ Detect Language</option>
+
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="kn">Kannada</option>
+                    <option value="te">Telugu</option>
+                    <option value="ta">Tamil</option>
+                    <option value="ml">Malayalam</option>
+                    <option value="mr">Marathi</option>
+                    <option value="bn">Bengali</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="pa">Punjabi</option>
+                    <option value="or">Odia</option>
+                    <option value="as">Assamese</option>
+                    <option value="ur">Urdu</option>
+                    <option value="ne">Nepali</option>
+                    <option value="sa">Sanskrit</option>
+
+                    <option value="ja">Japanese</option>
+                    <option value="zh-CN">Chinese</option>
+                    <option value="ko">Korean</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="it">Italian</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                    <option value="ar">Arabic</option>
+                    <option value="tr">Turkish</option>
+                    <option value="nl">Dutch</option>
+                    <option value="th">Thai</option>
+                    <option value="vi">Vietnamese</option>
+
+                </select>
+
+                <div id="detectionStatus" class="detection-status"></div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="swapLanguages"
+                class="swap-btn"
+                title="Swap Languages"
+            >
+                ⇄
+            </button>
+
+
+            <div class="language-group">
+
+                <label for="targetLanguage">To</label>
+
+                <select id="targetLanguage">
+
+                    <option value="en" selected>English</option>
+
+                    <option value="hi">Hindi</option>
+                    <option value="kn">Kannada</option>
+                    <option value="te">Telugu</option>
+                    <option value="ta">Tamil</option>
+                    <option value="ml">Malayalam</option>
+                    <option value="mr">Marathi</option>
+                    <option value="bn">Bengali</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="pa">Punjabi</option>
+                    <option value="or">Odia</option>
+                    <option value="as">Assamese</option>
+                    <option value="ur">Urdu</option>
+                    <option value="ne">Nepali</option>
+                    <option value="sa">Sanskrit</option>
+
+                    <option value="ja">Japanese</option>
+                    <option value="zh-CN">Chinese</option>
+                    <option value="ko">Korean</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="it">Italian</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                    <option value="ar">Arabic</option>
+                    <option value="tr">Turkish</option>
+                    <option value="nl">Dutch</option>
+                    <option value="th">Thai</option>
+                    <option value="vi">Vietnamese</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="translation-grid">
+
+            <!-- INPUT -->
+            <div class="translation-card">
+
+                <div class="card-header">
+
+                    <span>Your Text</span>
+
+                    <span
+                        id="inputCounter"
+                        class="character-count"
+                    >
+                        0 characters
+                    </span>
+
+                </div>
+
+
+                <textarea
+                    id="sourceText"
+                    placeholder="Type or paste your text here..."
+                    maxlength="5000"
+                ></textarea>
+
+
+                <div class="input-actions">
+
+                    <button
+                        type="button"
+                        id="voiceInputBtn"
+                        class="icon-btn"
+                        title="Voice Input"
+                    >
+                        🎤
+                    </button>
+
+                    <button
+                        type="button"
+                        id="detectLanguageBtn"
+                        class="action-btn"
+                    >
+                        🔍 Detect
+                    </button>
+
+                    <button
+                        type="button"
+                        id="clearBtn"
+                        class="action-btn"
+                    >
+                        ✕ Clear
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- OUTPUT -->
+            <div class="translation-card output-card">
+
+                <div class="card-header">
+
+                    <span>Translation</span>
+
+                    <span
+                        id="translationLanguage"
+                        class="output-language"
+                    >
+                        English
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="translationOutput"
+                    class="translation-output"
+                >
+                    <span class="output-placeholder">
+                        Your translation will appear here...
+                    </span>
+                </div>
+
+
+                <div class="output-actions">
+
+                    <button
+                        type="button"
+                        id="copyBtn"
+                        class="action-btn"
+                    >
+                        📋 Copy
+                    </button>
+
+                    <button
+                        type="button"
+                        id="listenBtn"
+                        class="action-btn"
+                    >
+                        🔊 Listen
+                    </button>
+
+                    <button
+                        type="button"
+                        id="favoriteBtn"
+                        class="action-btn favorite-btn"
+                    >
+                        ⭐ Save
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="main-action">
+
+            <button
+                type="button"
+                id="translateBtn"
+                class="translate-btn"
+            >
+                ✨ Translate
+            </button>
+
+        </div>
+
+
+        <div id="emotionBox" class="emotion-box">
+
+            <span>Emotion:</span>
+
+            <strong id="emotionResult">
+                Neutral
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CONVERSATION
+    ====================================================== -->
+
+    <section
+        id="conversationSection"
+        class="feature-section"
+    >
+
+        <div class="section-heading">
+
+            <h2>💬 Conversation Translator</h2>
+
+            <p>
+                Translate naturally in both directions.
+            </p>
+
+        </div>
+
+
+        <!-- LANGUAGES -->
+
+        <div class="conversation-language-bar">
+
+            <div class="language-group">
+
+                <label for="conversationSource">
+                    👤 Person A
+                </label>
+
+                <select id="conversationSource">
+
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="kn">Kannada</option>
+                    <option value="te">Telugu</option>
+                    <option value="ta">Tamil</option>
+                    <option value="ml">Malayalam</option>
+                    <option value="mr">Marathi</option>
+                    <option value="bn">Bengali</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="pa">Punjabi</option>
+                    <option value="ja">Japanese</option>
+                    <option value="zh-CN">Chinese</option>
+                    <option value="ko">Korean</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="it">Italian</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                    <option value="ar">Arabic</option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="conversationSwapBtn"
+                class="swap-btn"
+                title="Swap Languages"
+            >
+                ⇄
+            </button>
+
+
+            <div class="language-group">
+
+                <label for="conversationTarget">
+                    👤 Person B
+                </label>
+
+                <select id="conversationTarget">
+
+                    <option value="ja" selected>Japanese</option>
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="kn">Kannada</option>
+                    <option value="te">Telugu</option>
+                    <option value="ta">Tamil</option>
+                    <option value="ml">Malayalam</option>
+                    <option value="mr">Marathi</option>
+                    <option value="bn">Bengali</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="pa">Punjabi</option>
+                    <option value="zh-CN">Chinese</option>
+                    <option value="ko">Korean</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- A → B -->
+
+        <div class="conversation-card">
+
+            <div class="conversation-header">
+
+                <span>👤 Person A → Person B</span>
+
+                <span id="personALanguage">
+                    English → Japanese
+                </span>
+
+            </div>
+
+
+            <textarea
+                id="conversationText"
+                placeholder="Person A: Type your message..."
+            ></textarea>
+
+
+            <div class="conversation-actions">
+
+                <button
+                    type="button"
+                    id="conversationVoiceBtn"
+                    class="icon-btn"
+                >
+                    🎤 Speak
+                </button>
+
+                <button
+                    type="button"
+                    id="conversationTranslateBtn"
+                    class="translate-btn small"
+                >
+                    Translate A → B
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- A → B OUTPUT -->
+
+        <div class="conversation-card conversation-result-card">
+
+            <div class="conversation-header">
+
+                <span>🤖 Person B Translation</span>
+
+                <span id="personBLanguage">
+                    Japanese
+                </span>
+
+            </div>
+
+
+            <div
+                id="conversationOutput"
+                class="conversation-output"
+            >
+                Person B translation will appear here...
+            </div>
+
+
+            <div class="conversation-actions">
+
+                <button
+                    type="button"
+                    id="conversationCopyBtn"
+                    class="action-btn"
+                >
+                    📋 Copy
+                </button>
+
+                <button
+                    type="button"
+                    id="conversationListenBtn"
+                    class="action-btn"
+                >
+                    🔊 Listen
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- B → A -->
+
+        <div class="conversation-card person-b-card">
+
+            <div class="conversation-header">
+
+                <span>👤 Person B → Person A</span>
+
+                <span id="personBLanguageInput">
+                    Japanese → English
+                </span>
+
+            </div>
+
+
+            <textarea
+                id="conversationBText"
+                placeholder="Person B: Type your message..."
+            ></textarea>
+
+
+            <div class="conversation-actions">
+
+                <button
+                    type="button"
+                    id="conversationBVoiceBtn"
+                    class="icon-btn"
+                >
+                    🎤 Speak
+                </button>
+
+                <button
+                    type="button"
+                    id="conversationBTranslateBtn"
+                    class="translate-btn small"
+                >
+                    Translate B → A
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- B → A OUTPUT -->
+
+        <div class="conversation-card conversation-result-card">
+
+            <div class="conversation-header">
+
+                <span>🤖 Person A Translation</span>
+
+                <span id="personALanguageOutput">
+                    English
+                </span>
+
+            </div>
+
+
+            <div
+                id="conversationBOutput"
+                class="conversation-output"
+            >
+                Person A translation will appear here...
+            </div>
+
+
+            <div class="conversation-actions">
+
+                <button
+                    type="button"
+                    id="conversationBCopyBtn"
+                    class="action-btn"
+                >
+                    📋 Copy
+                </button>
+
+                <button
+                    type="button"
+                    id="conversationBListenBtn"
+                    class="action-btn"
+                >
+                    🔊 Listen
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- CULTURAL TIP -->
+
+        <div
+            id="culturalTipBox"
+            class="cultural-tip"
+        >
+
+            <span>💡 Cultural Tip</span>
+
+            <p id="culturalTip">
+                Cultural information will appear here.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         IMAGE TRANSLATION
+    ====================================================== -->
+
+    <section
+        id="imageSection"
+        class="feature-section"
+    >
+
+        <div class="section-heading">
+
+            <h2>📸 Image → Translation</h2>
+
+            <p>
+                Upload a signboard, menu, document, or notice.
+            </p>
+
+        </div>
+
+
+        <div class="image-language-selection">
+
+            <label for="imageTargetLanguage">
+                Translate image text to:
+            </label>
+
+            <select id="imageTargetLanguage">
+
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="kn">Kannada</option>
+                <option value="te">Telugu</option>
+                <option value="ta">Tamil</option>
+                <option value="ml">Malayalam</option>
+                <option value="mr">Marathi</option>
+                <option value="bn">Bengali</option>
+                <option value="gu">Gujarati</option>
+                <option value="pa">Punjabi</option>
+                <option value="ja">Japanese</option>
+                <option value="zh-CN">Chinese</option>
+                <option value="ko">Korean</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+
+            </select>
+
+        </div>
+
+
+        <div
+            id="imageUploadArea"
+            class="image-upload-area"
+        >
+
+            <div class="upload-icon">📸</div>
+
+            <h3>Upload an Image</h3>
+
+            <p>
+                Signboard • Menu • Document • Notice
+            </p>
+
+
+            <label
+                for="imageInput"
+                class="upload-btn"
+            >
+                📁 Choose Image
+            </label>
+
+
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                hidden
+            >
+
+
+            <p
+                id="selectedImageName"
+                class="selected-file"
+            >
+                No image selected
+            </p>
+
+        </div>
+
+
+        <div
+            id="imagePreviewContainer"
+            class="image-preview-container"
+            style="display:none;"
+        >
+
+            <img
+                id="imagePreview"
+                src=""
+                alt="Selected image"
+            >
+
+            <button
+                type="button"
+                id="removeImageBtn"
+                class="remove-image-btn"
+            >
+                ✕ Remove
+            </button>
+
+        </div>
+
+
+        <div class="main-action">
+
+            <button
+                type="button"
+                id="imageTranslateBtn"
+                class="translate-btn"
+            >
+                📸 Extract & Translate
+            </button>
+
+        </div>
+
+
+        <div
+            id="imageResult"
+            class="image-result"
+            style="display:none;"
+        >
+
+            <div class="image-result-card">
+
+                <div class="result-heading">
+                    📝 Extracted Text
+                </div>
+
+                <div
+                    id="extractedText"
+                    class="result-text"
+                ></div>
+
+            </div>
+
+
+            <div class="image-result-card">
+
+                <div class="result-heading">
+                    🌐 Translation
+                </div>
+
+                <div
+                    id="imageTranslation"
+                    class="result-text"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         VOICE TRANSLATION
+    ====================================================== -->
+
+    <section
+        id="voiceSection"
+        class="feature-section"
+    >
+
+        <div class="section-heading">
+
+            <h2>🎤 Voice → Voice Translation</h2>
+
+            <p>
+                Speak naturally and hear the translation.
+            </p>
+
+        </div>
+
+
+        <div class="voice-language-bar">
+
+            <div class="language-group">
+
+                <label for="voiceSourceLanguage">
+                    Speak in
+                </label>
+
+                <select id="voiceSourceLanguage">
+
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="kn">Kannada</option>
+                    <option value="te">Telugu</option>
+                    <option value="ta">Tamil</option>
+                    <option value="ml">Malayalam</option>
+                    <option value="ja">Japanese</option>
+                    <option value="zh-CN">Chinese</option>
+                    <option value="ko">Korean</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="voiceSwapBtn"
+                class="swap-btn"
+            >
+                ⇄
+            </button>
+
+
+            <div class="language-group">
+
+                <label for="voiceTargetLanguage">
+                    Translate to
+                </label>
+
+                <select id="voiceTargetLanguage">
+
+                    <option value="en" selected>English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="kn">Kannada</option>
+                    <option value="te">Telugu</option>
+                    <option value="ta">Tamil</option>
+                    <option value="ml">Malayalam</option>
+                    <option value="ja">Japanese</option>
+                    <option value="zh-CN">Chinese</option>
+                    <option value="ko">Korean</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="voice-container">
+
+            <button
+                type="button"
+                id="startVoiceBtn"
+                class="voice-main-btn"
+            >
+                🎤 Start Speaking
+            </button>
+
+            <p
+                id="voiceStatus"
+                class="voice-status"
+            >
+                Click the microphone and speak.
+            </p>
+
+        </div>
+
+
+        <div class="voice-result-card">
+
+            <div class="card-header">
+                🗣️ What You Said
+            </div>
+
+            <div
+                id="voiceInputText"
+                class="voice-text"
+            >
+                Your speech will appear here...
+            </div>
+
+        </div>
+
+
+        <div class="voice-result-card">
+
+            <div class="card-header">
+                🌐 Translation
+            </div>
+
+            <div
+                id="voiceTranslationText"
+                class="voice-text"
+            >
+                Voice translation will appear here...
+            </div>
+
+
+            <div class="output-actions">
+
+                <button
+                    type="button"
+                    id="voiceListenBtn"
+                    class="action-btn"
+                >
+                    🔊 Play Translation
+                </button>
+
+                <button
+                    type="button"
+                    id="voiceCopyBtn"
+                    class="action-btn"
+                >
+                    📋 Copy
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HISTORY MODAL -->
+
+    <div
+        id="historyModal"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h2>🕘 Translation History</h2>
+
+                <button
+                    type="button"
+                    id="closeHistoryBtn"
+                    class="close-modal"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+
+            <div
+                id="historyList"
+                class="history-list"
+            >
+
+                <p class="empty-message">
+                    No translation history yet.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="clearHistoryBtn"
+                class="clear-history-btn"
+            >
+                🗑 Clear History
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- FAVORITES MODAL -->
+
+    <div
+        id="favoritesModal"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h2>⭐ Favorite Translations</h2>
+
+                <button
+                    type="button"
+                    id="closeFavoritesBtn"
+                    class="close-modal"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+
+            <div
+                id="favoritesList"
+                class="history-list"
+            >
+
+                <p class="empty-message">
+                    No favorite translations yet.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="clearFavoritesBtn"
+                class="clear-history-btn"
+            >
+                🗑 Clear Favorites
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- LOADING -->
+
+    <div
+        id="loadingOverlay"
+        class="loading-overlay"
+        style="display:none;"
+    >
+
+        <div class="loading-box">
+
+            <div class="loader"></div>
+
+            <p id="loadingText">
+                Translating...
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOAST -->
+
+    <div
+        id="toast"
+        class="toast"
+    >
+        <span id="toastMessage"></span>
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <p>
+            🌐 <strong>LinguaAI</strong>
+            — Breaking language barriers with AI
+        </p>
+
+        <p class="footer-small">
+            Text • Voice • Image • Conversation
+        </p>
+
+    </footer>
+
+</div>
+
+
+<script
+    src="{{ url_for('static', filename='script.js') }}"
+    defer
+></script>
+
+</body>
+</html>
