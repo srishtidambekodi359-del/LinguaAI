@@ -20,4 +20,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Start Flask using Gunicorn
-CMD ["sh", "-c", "echo '=== LinguaAI startup ===' && echo 'PORT='$PORT && echo 'Files:' && ls -la && echo 'Python:' && python --version && echo 'Gunicorn:' && gunicorn --version && echo 'Starting Flask...' && gunicorn --bind 0.0.0.0:${PORT:-10000} app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "app:app"]
